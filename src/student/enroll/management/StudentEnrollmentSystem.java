@@ -27,10 +27,13 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     }
 
     @Override
-    public void checkStudentAvailablity(String studentID) {
+    public Student checkStudentAvailablity(String studentID) {
         for (Student s:studentList){
-
+            if (s.getStudentId().equals(studentID)){
+                return s;
+            }
         }
+        return null;
     }
 
     @Override
