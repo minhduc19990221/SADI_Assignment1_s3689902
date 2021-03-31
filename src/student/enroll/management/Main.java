@@ -11,9 +11,7 @@ public class Main {
                 Welcome to Student System Management
                 -------------------------
                 Please proceed to the menu for further actions""");
-        String sDate1 = "21/02/1999";
-        Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
-        Student a = new Student("s3689902","Minh Duc", date1);
+        StudentEnrollmentSystem ses = new StudentEnrollmentSystem();
         char exit = 'y';
         Scanner input = new Scanner(System.in);
         while(exit!='n'){
@@ -22,9 +20,9 @@ public class Main {
                 BufferedReader br = new BufferedReader(isr);
                 int choice;
                 System.out.println("\nMenu");
-                System.out.println("[1] Enter Student");
-                System.out.println("[2] Enter Students");
-                System.out.println("[3] Enter Teachers");
+                System.out.println("[1] Student");
+                System.out.println("[2] Course");
+                System.out.println("[3] Enroll");
                 System.out.print("Choice:");
                 choice = Integer.parseInt(br.readLine());
                 switch (choice){
@@ -37,8 +35,21 @@ public class Main {
                         String date = input.nextLine();
                         Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
                         Student student = new Student(studentId, name, birthDate);
+                        ses.addStudent(student);
                         System.out.println("Student: " + student.getStudentName() + " has successfully created");
                         break;
+                    case 2:
+                        System.out.println("Enter CourseID: ");
+                        String courseID = input.nextLine();
+                        System.out.println("Enter Course name: ");
+                        String courseName = input.nextLine();
+                        System.out.println("Enter required credits: ");
+                        int credits = input.nextInt();
+                        Course course = new Course(courseID,courseName,credits);
+                        System.out.println("Course: " + course.getCourseName() +"has successfully created");
+                        ses.addCourse(course);
+                        break;
+
                     default:
                         System.out.println("Choice not found! ");
                         System.out.println("\nDo it again? y/n");

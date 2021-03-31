@@ -37,6 +37,21 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     }
 
     @Override
+    public void addCourse(Course c) {
+        courseList.add(c);
+    }
+
+    @Override
+    public void removeCourse(Course c) {
+        courseList.remove(c);
+    }
+
+    @Override
+    public void modifyCourse(Course c, int index) {
+        courseList.set(index, c);
+    }
+
+    @Override
     public void modifyStudent(Student s, int index) {
         studentList.set(index,s);
     }
