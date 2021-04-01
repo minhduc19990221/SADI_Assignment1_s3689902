@@ -15,6 +15,15 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
 
         return studentList;
     }
+    public ArrayList<Course> displayCourseList () {
+
+        return courseList;
+    }
+
+    @Override
+    public Student getStudent(int s) {
+        return studentList.get(s);
+    }
 
     @Override
     public void addStudent(Student s) {
@@ -50,7 +59,10 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     public void modifyCourse(Course c, int index) {
         courseList.set(index, c);
     }
-
+    @Override
+    public Course getCourse(int s) {
+        return courseList.get(s);
+    }
     @Override
     public void modifyStudent(Student s, int index) {
         studentList.set(index,s);
