@@ -1,14 +1,32 @@
 package student.enroll.management;
 
+import java.util.ArrayList;
+
 public class Course {
-    public String courseId;
-    public String courseName;
-    public int credits;
+    private String courseId;
+    private String courseName;
+    private int credits;
+    private ArrayList<Student> studentList;
 
     public Course(String courseId, String courseName, int credits) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.credits = credits;
+        this.studentList = studentList;
+    }
+
+    public boolean addStudent(Student student){
+        if (student==null || studentList.contains(student)){
+            System.out.println("Student already in this. Attempt failed!");
+            return false;
+        }
+        studentList.add(student);
+        return true;
+    }
+    public void printStudents(){
+        for(Student s : studentList){
+            System.out.println(s.getStudentName() + ", with " + s.getStudentId() + " dob: " + s.getBirthDate());
+        }
     }
 
     public String getCourseId() {

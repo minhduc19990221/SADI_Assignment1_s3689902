@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -14,7 +13,6 @@ public class Main {
                 -------------------------
                 Please proceed to the menu for further actions""");
         StudentEnrollmentSystem ses = new StudentEnrollmentSystem();
-        String regex = "^[a-zA-Z \\-\\.\\']*$";
         char exit = 'y';
         Scanner input = new Scanner(System.in);
         while(exit!='n'){
@@ -82,7 +80,9 @@ public class Main {
                                 System.out.println("Name: " +  ses.getStudent(view).getStudentName());
                                 System.out.println("Student ID: " +  ses.getStudent(view).getStudentId());
                                 System.out.println("Birthdate: " +  ses.getStudent(view).getBirthDate());
+                                break;
                             default:
+                                // Remodify this, change studentchoice to int
                                 System.out.println("Choice not found! ");
                                 System.out.println("\nDo it again? y/n");
                                 String choice2 = input.nextLine().toLowerCase();
@@ -140,12 +140,21 @@ public class Main {
                                 System.out.println("Course Name: " +  ses.getCourse(view).getCourseName());
                                 System.out.println("Course ID: " +  ses.getCourse(view).getCourseId());
                                 System.out.println("Credits: " +  ses.getCourse(view).getCredits());
+                                break;
                             default:
+                                // Remodify this, change coursechoice to int
                                 System.out.println("Choice not found! ");
                                 System.out.println("\nDo it again? y/n");
                                 String choice2 = input.nextLine().toLowerCase();
-                                studentChoice = choice2.charAt(0);
+                                courseChoice = choice2.charAt(0);
                                 break; }
+                    break;
+                    default:
+                        System.out.println("Choice not found! ");
+                        System.out.println("\nDo it again? y/n");
+                        String choice3 = input.nextLine().toLowerCase();
+                        exit = choice3.charAt(0);
+                        break;
                 }
             } catch (IOException e) {
                 e.printStackTrace();

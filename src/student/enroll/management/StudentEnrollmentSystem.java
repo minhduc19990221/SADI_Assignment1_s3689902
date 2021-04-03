@@ -44,6 +44,16 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
         }
         return null;
     }
+    @Override
+    public void printStudents() {
+        System.out.println("Here is the list of current students");
+        for(Student s : studentList){
+            System.out.println(s.getStudentName() + ", with ID: " + s.getStudentId() + " born in " + s.getBirthDate());
+        }
+        System.out.println("------------");
+    }
+
+
 
     @Override
     public void addCourse(Course c) {
@@ -59,6 +69,17 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     public void modifyCourse(Course c, int index) {
         courseList.set(index, c);
     }
+
+    @Override
+    public void printCourse() {
+        System.out.println("Here is the list of current courses.");
+        for(Course c : courseList){
+            System.out.println("Name: " + c.getCourseName() + " ID: " +c.getCourseId() + " requires credits: " + c.getCredits());
+        }
+        System.out.println("------------");
+    }
+
+
     @Override
     public Course getCourse(int s) {
         return courseList.get(s);
