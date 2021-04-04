@@ -26,6 +26,7 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
 
         return semesterLists;
     }
+
     @Override
     public Student getStudentObject(String id){
         Student student = null;

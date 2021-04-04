@@ -38,6 +38,7 @@ public class Main {
                         studentChoice = input.nextInt();
                         switch (studentChoice){
                             case 1:
+                                // if/else to catch error missing!
                                 System.out.print("\nEnter Student ID: ");
                                 String studentId = input.next();
                                 System.out.print("\nEnter Student name: ");
@@ -108,6 +109,7 @@ public class Main {
                         courseChoice = input.nextInt();
                         switch (courseChoice){
                             case 1:
+                                // if/else to catch error missing!
                                 System.out.print("\nEnter Course ID: ");
                                 String courseId = input.next();
                                 System.out.print("\nEnter Course name: ");
@@ -166,35 +168,37 @@ public class Main {
                     break;
                     case 3:
                         int enrollChoice;
-                        System.out.println("[1] Enroll to a Semester");
+                        System.out.println("[1] Enlist a Course to a Semester");
                         System.out.println("[2] Delete Semester");
-                        System.out.println("[3] Update Semester");
-                        System.out.println("[4] View Semester Info");
-                        System.out.println("[5] View Semester List");
+                        System.out.println("[3] Update Semester Enrollment");
+                        System.out.println("[4] Create a Semester");
+                        System.out.println("[5] Enroll a Student to a Semester");
                         System.out.print("Choice: ");
                         enrollChoice = input.nextInt();
                         switch (enrollChoice){
                             case 1:
-                                String studentInput;
                                 String courseInput;
                                 String semesterName;
                                 Course courseEnroll;
-                                Student studentEnroll;
-                                System.out.println("Attempt to enroll a student...");
-                                System.out.println("Please be noted that student and course must be created in advance.");
-                                Scanner enroll = new Scanner(System.in);
-                                System.out.println("Please enter the student ID: ");
-                                studentInput = enroll.nextLine();
-                                studentEnroll = ses.getStudentObject(studentInput);
+                                System.out.println("Attempt to enlist a course to a semester...");
+                                System.out.println("Please be noted that course must be created in advance.");
+                                Scanner enlist = new Scanner(System.in);
                                 System.out.println("Please enter the course ID: ");
-                                courseInput = enroll.nextLine();
+                                courseInput = enlist.nextLine();
                                 courseEnroll = ses.getCourseObject(courseInput);
                                 System.out.println("Please enter the semester name: ");
-                                semesterName = enroll.nextLine();
-                                SemesterEnrollment semester = new SemesterEnrollment(semesterName, studentEnroll, courseEnroll);
-                                ses.displaySemesterList().add(semester);
-                                System.out.println("Success!");
-                                break;
+                                semesterName = enlist.nextLine();
+                                if(ses.getSemesterObject(semesterName).getCourseArrayList().contains(courseEnroll)){
+                                    System.out.println("Course already enlisted!");
+                                    break;
+                                }
+                                else {
+                                    System.out.println("Adding Course related: ");
+                                    ses.getSemesterObject(semesterName).getCourseArrayList().add(courseEnroll);
+                                    System.out.println("Success!");
+                                    break;
+                                }
+
                             case 2:
                                 System.out.println("Attempt to delete a semester");
                                 String semesterNameDelete;
@@ -209,29 +213,80 @@ public class Main {
                             case 3:
                                 String studentInputUpdate;
                                 String courseInputUpdate;
+                                String courseNewUpdate;
                                 String semesterNameUpdate;
                                 Course courseEnrollUpdate;
+                                Course courseNewUpdateEnroll;
                                 Student studentEnrollUpdate;
                                 SemesterEnrollment semesterEnrollmentUpdate;
                                 System.out.println("Attempt to update a semester...");
                                 Scanner enrollUpdate = new Scanner(System.in);
-                                System.out.println("Please enter the student ID: ");
-                                studentInputUpdate = enrollUpdate.nextLine();
-                                studentEnrollUpdate = ses.getStudentObject(studentInputUpdate);
-                                System.out.println("Please enter the course ID: ");
-                                courseInputUpdate = enrollUpdate.nextLine();
-                                courseEnrollUpdate = ses.getCourseObject(courseInputUpdate);
                                 System.out.println("Please enter the semester name to update: ");
                                 semesterNameUpdate = enrollUpdate.nextLine();
                                 semesterEnrollmentUpdate = ses.getSemesterObject(semesterNameUpdate);
-                                SemesterEnrollment semesterUpdate = new SemesterEnrollment(semesterNameUpdate, studentEnrollUpdate, courseEnrollUpdate);
-                                ses.modifySemester(semesterEnrollmentUpdate, semesterUpdate);
-                                studentEnrollUpdate.getCoursesListPersonal().add(courseEnrollUpdate);
-
+                                System.out.println("Please enter the student ID: ");
+                                studentInputUpdate = enrollUpdate.nextLine();
+                                studentEnrollUpdate = ses.getStudentObject(studentInputUpdate);
+                                System.out.println("Please enter the old course ID: ");
+                                courseInputUpdate = enrollUpdate.nextLine();
+                                courseEnrollUpdate = ses.getCourseObject(courseInputUpdate);
+                                System.out.println("Please enter the new course ID: ");
+                                courseNewUpdate = enrollUpdate.nextLine();
+                                courseNewUpdateEnroll = ses.getCourseObject(courseNewUpdate);
+                                if(semesterEnrollmentUpdate.getCourseObject(courseInputUpdate).getStudentList().contains(studentEnrollUpdate) || semesterEnrollmentUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().contains(courseEnrollUpdate)){
+                                    System.out.println("Student found! Attempt to update the enrollment....");
+                                    semesterEnrollmentUpdate.getCourseObject(courseInputUpdate).getStudentList().remove(studentEnrollUpdate);
+                                    semesterEnrollmentUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().remove(courseEnrollUpdate);
+                                    System.out.println("Successfully removed the old enrollment...");
+                                    semesterEnrollmentUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().add(courseNewUpdateEnroll);
+                                    semesterEnrollmentUpdate.getCourseObject(courseNewUpdate).getStudentList().add(studentEnrollUpdate);
+                                    System.out.println("Successfully updated");
+                                    break;
+                                }
+                                else {
+                                    System.out.println("Student not found :(");
+                                    break;
+                                }
+                            case 4:
+                                // if/else to catch error missing!
+                                System.out.println("Attempt to create a semester...");
+                                Scanner semesterNameInput = new Scanner(System.in);
+                                System.out.println("Please enter a semester name: ");
+                                String semesterNameCreate = semesterNameInput.nextLine();
+                                SemesterEnrollment semesterCreate = new SemesterEnrollment(semesterNameCreate);
+                                ses.displaySemesterList().add(semesterCreate);
                                 System.out.println("Success!");
                                 break;
-                            case 4:
-
+                            case 5:
+                                String studentID_enroll;
+                                String semesterName_enroll;
+                                String courseID_enroll;
+                                SemesterEnrollment semester_enroll;
+                                Student student_enroll;
+                                Course course_enroll;
+                                Scanner enroll = new Scanner(System.in);
+                                System.out.println("Attempt to enroll a student to a course in a semester...");
+                                System.out.println("Please be noted that student, course, and semester must be created in advance");
+                                System.out.println("Please enter Student ID: ");
+                                studentID_enroll = enroll.nextLine();
+                                student_enroll = ses.getStudentObject(studentID_enroll);
+                                System.out.println("Please enter the course ID: ");
+                                courseID_enroll = enroll.nextLine();
+                                course_enroll = ses.getCourseObject(courseID_enroll);
+                                System.out.println("Please enter the semester name: ");
+                                semesterName_enroll = enroll.nextLine();
+                                semester_enroll = ses.getSemesterObject(semesterName_enroll);
+                                if(semester_enroll.getCourseObject(courseID_enroll).getStudentList().contains(student_enroll) || semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal().contains(course_enroll)){
+                                    System.out.println("Enroll failed! Student already in this course.");
+                                    break;
+                                }
+                                else{
+                                    System.out.println("Proceed to enroll...");
+                                    semester_enroll.getCourseObject(courseID_enroll).getStudentList().add(student_enroll);
+                                    semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal().add(course_enroll);
+                                    System.out.println("Success!");
+                                    break;
+                                }
                         }
                         break;
                     default:
