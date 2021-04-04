@@ -33,6 +33,7 @@ public class Main {
                         System.out.println("[2] Delete Student");
                         System.out.println("[3] Modify Student");
                         System.out.println("[4] View Student Info");
+                        System.out.println("[5] View Student List");
                         System.out.print("Choice: ");
                         studentChoice = input.nextInt();
                         switch (studentChoice){
@@ -52,25 +53,30 @@ public class Main {
                                 break;
                             case 2:
                                 System.out.println("\nAttempt to remove a student.");
-                                System.out.println("\nEnter Student index: ");
-                                int studentIndexRemove = input.nextInt();
-                                System.out.println("Removing Student: "+ ses.displayStudentList().get(studentIndexRemove));
-                                ses.removeStudent(ses.displayStudentList().get(studentIndexRemove));
+                                System.out.println("\nEnter Student ID: ");
+                                String studentRemove = input.nextLine();
+                                System.out.println("Attempt to remove the following student: ");
+                                ses.getStudent(studentRemove);
+                                System.out.println("Deleting....");
+                                ses.displayStudentList().remove(ses.getStudentObject(studentRemove));
+                                System.out.println("Success!");
                                 break;
                             case 3:
+                                Student studentUpdate;
                                 System.out.println("\n Attempt to edit a student.");
-                                System.out.print("\nEnter Student ID: ");
+                                System.out.print("\nEnter Student ID to update: ");
+                                String studentIdLocator = input.next();
+                                studentUpdate = ses.getStudentObject(studentIdLocator);
+                                System.out.print("\nEnter new Student ID: ");
                                 String studentIdAdjust = input.next();
-                                System.out.print("\nEnter Student name: ");
+                                System.out.print("\nEnter new Student name: ");
                                 Scanner nameInputAdjust = new Scanner(System.in);
                                 String nameAdjust = nameInputAdjust.nextLine();
-                                System.out.print("\nEnter Student birthDate (dd/MM/yyyy): ");
+                                System.out.print("\nEnter new Student birthDate (dd/MM/yyyy): ");
                                 String dateAdjust = input.next();
                                 Date birthDateAdjust = new SimpleDateFormat("dd/MM/yyyy").parse(dateAdjust);
                                 Student studentAdjust = new Student(studentIdAdjust, nameAdjust, birthDateAdjust);
-                                System.out.println("\n Enter the Student Index: ");
-                                int studentIndexAdjust = input.nextInt();
-                                ses.modifyStudent(studentAdjust,studentIndexAdjust);
+                                ses.modifyStudent(studentAdjust,studentUpdate);
                                 break;
                             case 4:
                                 Scanner nameSearch = new Scanner(System.in);
@@ -116,13 +122,20 @@ public class Main {
                                 break;
                             case 2:
                                 System.out.println("\nAttempt to remove a course.");
-                                System.out.println("\nEnter Course index: ");
-                                int courseIndexRemove = input.nextInt();
-                                System.out.println("Removing Student: "+ ses.displayStudentList().get(courseIndexRemove));
-                                ses.removeCourse(ses.displayCourseList().get(courseIndexRemove));
+                                System.out.println("\nEnter Course ID: ");
+                                String courseRemove = input.nextLine();
+                                System.out.println("Attempt to remove the following course: ");
+                                ses.getCourse(courseRemove);
+                                System.out.println("Deleting...");
+                                ses.displayCourseList().remove(ses.getCourseObject(courseRemove));
+                                System.out.println("Success!");
                                 break;
                             case 3:
-                                System.out.println("\n Attempt to edit a student.");
+                                Course courseUpdate;
+                                System.out.println("\n Attempt to edit a course.");
+                                System.out.print("\nEnter Course ID to update: ");
+                                String courseIdFound = input.next();
+                                courseUpdate = ses.getCourseObject(courseIdFound);
                                 System.out.print("\nEnter Course ID: ");
                                 String courseIdAdjust = input.next();
                                 System.out.print("\nEnter Course name: ");
@@ -131,9 +144,7 @@ public class Main {
                                 System.out.print("\nEnter credits: ");
                                 int creditsAdjust = input.nextInt();
                                 Course courseAdjust = new Course(courseIdAdjust, CourseNameAdjust, creditsAdjust);
-                                System.out.println("\n Enter the Student Index: ");
-                                int courseIndexAdjust = input.nextInt();
-                                ses.modifyCourse(courseAdjust,courseIndexAdjust);
+                                ses.modifyCourse(courseAdjust, courseUpdate);
                                 break;
                             case 4:
                                 Scanner idSearch = new Scanner(System.in);
@@ -154,7 +165,75 @@ public class Main {
                                 break; }
                     break;
                     case 3:
+                        int enrollChoice;
+                        System.out.println("[1] Enroll to a Semester");
+                        System.out.println("[2] Delete Semester");
+                        System.out.println("[3] Update Semester");
+                        System.out.println("[4] View Semester Info");
+                        System.out.println("[5] View Semester List");
+                        System.out.print("Choice: ");
+                        enrollChoice = input.nextInt();
+                        switch (enrollChoice){
+                            case 1:
+                                String studentInput;
+                                String courseInput;
+                                String semesterName;
+                                Course courseEnroll;
+                                Student studentEnroll;
+                                System.out.println("Attempt to enroll a student...");
+                                System.out.println("Please be noted that student and course must be created in advance.");
+                                Scanner enroll = new Scanner(System.in);
+                                System.out.println("Please enter the student ID: ");
+                                studentInput = enroll.nextLine();
+                                studentEnroll = ses.getStudentObject(studentInput);
+                                System.out.println("Please enter the course ID: ");
+                                courseInput = enroll.nextLine();
+                                courseEnroll = ses.getCourseObject(courseInput);
+                                System.out.println("Please enter the semester name: ");
+                                semesterName = enroll.nextLine();
+                                SemesterEnrollment semester = new SemesterEnrollment(semesterName, studentEnroll, courseEnroll);
+                                ses.displaySemesterList().add(semester);
+                                System.out.println("Success!");
+                                break;
+                            case 2:
+                                System.out.println("Attempt to delete a semester");
+                                String semesterNameDelete;
+                                SemesterEnrollment semesterEnrollment;
+                                Scanner deleteSemesterInput = new Scanner(System.in);
+                                System.out.println("Please enter semester name to delete: ");
+                                semesterNameDelete = deleteSemesterInput.nextLine();
+                                semesterEnrollment = ses.getSemesterObject(semesterNameDelete);
+                                ses.displaySemesterList().remove(semesterEnrollment);
+                                System.out.println("Success!");
+                                break;
+                            case 3:
+                                String studentInputUpdate;
+                                String courseInputUpdate;
+                                String semesterNameUpdate;
+                                Course courseEnrollUpdate;
+                                Student studentEnrollUpdate;
+                                SemesterEnrollment semesterEnrollmentUpdate;
+                                System.out.println("Attempt to update a semester...");
+                                Scanner enrollUpdate = new Scanner(System.in);
+                                System.out.println("Please enter the student ID: ");
+                                studentInputUpdate = enrollUpdate.nextLine();
+                                studentEnrollUpdate = ses.getStudentObject(studentInputUpdate);
+                                System.out.println("Please enter the course ID: ");
+                                courseInputUpdate = enrollUpdate.nextLine();
+                                courseEnrollUpdate = ses.getCourseObject(courseInputUpdate);
+                                System.out.println("Please enter the semester name to update: ");
+                                semesterNameUpdate = enrollUpdate.nextLine();
+                                semesterEnrollmentUpdate = ses.getSemesterObject(semesterNameUpdate);
+                                SemesterEnrollment semesterUpdate = new SemesterEnrollment(semesterNameUpdate, studentEnrollUpdate, courseEnrollUpdate);
+                                ses.modifySemester(semesterEnrollmentUpdate, semesterUpdate);
+                                studentEnrollUpdate.getCoursesListPersonal().add(courseEnrollUpdate);
 
+                                System.out.println("Success!");
+                                break;
+                            case 4:
+
+                        }
+                        break;
                     default:
                         System.out.println("Choice not found! ");
                         System.out.println("\nDo it again? y/n");
@@ -168,3 +247,4 @@ public class Main {
         }
     }
 }
+

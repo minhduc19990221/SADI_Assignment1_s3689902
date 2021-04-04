@@ -3,12 +3,14 @@ package student.enroll.management;
 import java.util.ArrayList;
 
 class StudentEnrollmentSystem implements StudentEnrollmentManager {
-    private String semester;
-    private ArrayList<Student> studentList = new ArrayList<Student>();
-    private ArrayList<Course> courseList = new ArrayList<Course>();
+
+    private ArrayList<Student> studentList;
+    private ArrayList<Course> courseList;
+    private ArrayList<SemesterEnrollment> semesterLists;
     public StudentEnrollmentSystem() {
         studentList = new ArrayList<Student>();
         courseList = new ArrayList<Course>();
+        semesterLists = new ArrayList<SemesterEnrollment>();
     }
 
     public ArrayList<Student> displayStudentList () {
@@ -20,6 +22,48 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
         return courseList;
     }
 
+    public ArrayList<SemesterEnrollment> displaySemesterList () {
+
+        return semesterLists;
+    }
+    @Override
+    public Student getStudentObject(String id){
+        Student student = null;
+        for(Student s : studentList){
+            if(s.getStudentId().equals(id)){student = s;}
+            else{ return null; }
+        }
+        return student;
+    }
+    @Override
+    public Course getCourseObject(String id){
+        Course course = null;
+        for(Course c : courseList){
+            if(c.getCourseId().equals(id)){course = c;}
+            else{ return null; }
+        }
+        return course;
+    }
+    @Override
+    public SemesterEnrollment getSemesterObject(String name){
+        SemesterEnrollment semester = null;
+        for(SemesterEnrollment s : semesterLists){
+            if(s.getSemesterName().equals(name)){semester = s;}
+            else{return null;}
+        }
+        return semester;
+    }
+    @Override
+    public void modifySemester(SemesterEnrollment semester, SemesterEnrollment semesterToUpdate){semesterLists.set(semesterLists.indexOf(semesterToUpdate), semester);}
+    public void getSemester(String name){
+        for(SemesterEnrollment s : semesterLists){
+            if(s.getSemesterName().equals(name)){
+                System.out.println("Here is the info of the required semester: ");
+                System.out.println("Name: "+s.getSemesterName());
+
+            }
+        }
+    }
     @Override
     public void getStudent(String id) {
         for(Student s : studentList){
@@ -77,8 +121,8 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     }
 
     @Override
-    public void modifyCourse(Course c, int index) {
-        courseList.set(index, c);
+    public void modifyCourse(Course c, Course courseUpdate) {
+        courseList.set(courseList.indexOf(courseUpdate), c);
     }
 
     @Override
@@ -106,8 +150,8 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
         }
     }
     @Override
-    public void modifyStudent(Student s, int index) {
-        studentList.set(index,s);
+    public void modifyStudent(Student s, Student studentUpdate) {
+        studentList.set(studentList.indexOf(studentUpdate),s);
     }
 
 }

@@ -23,7 +23,24 @@ public class Course {
         studentList.add(student);
         return true;
     }
+    public boolean removeStudent(Student student){
+        if (student==null || studentList.contains(student)){
+            System.out.println("Attempt to remove a student...");
+            studentList.remove(student);
+            System.out.println("Success!");
+            return true;
+        }
+        System.out.println("Can't find the student! Error");;
+        return true;
+    }
 
+    public ArrayList<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(ArrayList<Student> studentList) {
+        this.studentList = studentList;
+    }
 
     public String getCourseId() {
         return courseId;
