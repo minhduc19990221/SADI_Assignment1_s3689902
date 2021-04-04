@@ -21,8 +21,19 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     }
 
     @Override
-    public Student getStudent(int s) {
-        return studentList.get(s);
+    public void getStudent(String id) {
+        for(Student s : studentList){
+            if(s.getStudentId().equals(id)){
+                System.out.println("Here is the info of the required student: ");
+                System.out.println("Name: "+s.getStudentName());
+                System.out.println("Student ID: " + s.getStudentId());
+                System.out.println("DOB: " + s.getBirthDate());
+            }
+            else{
+                System.out.println("Student not found!");
+            }
+        }
+
     }
 
     @Override
@@ -81,8 +92,18 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
 
 
     @Override
-    public Course getCourse(int s) {
-        return courseList.get(s);
+    public void getCourse(String id) {
+        for(Course c : courseList){
+            if(c.getCourseId().equals(id)){
+                System.out.println("Here is the information of the course: ");
+                System.out.println("Name: "+c.getCourseName());
+                System.out.println("ID: "+c.getCourseId());
+                System.out.println("Required: "+c.getCredits());
+            }
+            else{
+                System.out.println("Course not found!");
+            }
+        }
     }
     @Override
     public void modifyStudent(Student s, int index) {

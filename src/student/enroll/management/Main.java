@@ -73,20 +73,22 @@ public class Main {
                                 ses.modifyStudent(studentAdjust,studentIndexAdjust);
                                 break;
                             case 4:
-                                int view;
-                                System.out.println("Enter the Student Index to view: ");
-                                view = input.nextInt();
-                                System.out.println("Here is the information of the student: ");
-                                System.out.println("Name: " +  ses.getStudent(view).getStudentName());
-                                System.out.println("Student ID: " +  ses.getStudent(view).getStudentId());
-                                System.out.println("Birthdate: " +  ses.getStudent(view).getBirthDate());
+                                Scanner nameSearch = new Scanner(System.in);
+                                String view;
+                                System.out.println("Enter the Student ID to view: ");
+                                view = nameSearch.nextLine();
+                                ses.getStudent(view);
+                                break;
+                            case 5:
+                                System.out.println("Here is the list of available students: ");
+                                ses.printStudents();
                                 break;
                             default:
                                 // Remodify this, change studentchoice to int
                                 System.out.println("Choice not found! ");
-                                System.out.println("\nDo it again? y/n");
-                                String choice2 = input.nextLine().toLowerCase();
-                                studentChoice = choice2.charAt(0);
+                                System.out.println("\nDo it again? 1 2 3 4");
+                                int choice2 = input.nextInt();
+                                studentChoice = choice2;
                                 break; }
                     break;
                     case 2:
@@ -95,6 +97,7 @@ public class Main {
                         System.out.println("[2] Delete Course");
                         System.out.println("[3] Modify Course");
                         System.out.println("[4] View Course Info");
+                        System.out.println("[5] View Course List");
                         System.out.print("Choice: ");
                         courseChoice = input.nextInt();
                         switch (courseChoice){
@@ -133,22 +136,25 @@ public class Main {
                                 ses.modifyCourse(courseAdjust,courseIndexAdjust);
                                 break;
                             case 4:
-                                int view;
-                                System.out.println("Enter the Course Index to view: ");
-                                view = input.nextInt();
-                                System.out.println("Here is the information of the course: ");
-                                System.out.println("Course Name: " +  ses.getCourse(view).getCourseName());
-                                System.out.println("Course ID: " +  ses.getCourse(view).getCourseId());
-                                System.out.println("Credits: " +  ses.getCourse(view).getCredits());
+                                Scanner idSearch = new Scanner(System.in);
+                                String view;
+                                System.out.println("Enter the Course ID to view: ");
+                                view = idSearch.nextLine();
+                                ses.getCourse(view);
+                                break;
+                            case 5:
+                                System.out.println("Here is the list of available courses: ");
+                                ses.printCourse();
                                 break;
                             default:
-                                // Remodify this, change coursechoice to int
                                 System.out.println("Choice not found! ");
-                                System.out.println("\nDo it again? y/n");
-                                String choice2 = input.nextLine().toLowerCase();
-                                courseChoice = choice2.charAt(0);
+                                System.out.println("\nDo it again? 1 2 3 4");
+                                int choice2 = input.nextInt();
+                                courseChoice = choice2;
                                 break; }
                     break;
+                    case 3:
+
                     default:
                         System.out.println("Choice not found! ");
                         System.out.println("\nDo it again? y/n");

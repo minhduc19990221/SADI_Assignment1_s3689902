@@ -32,6 +32,8 @@ public class Student {
         System.out.println("Attempt to drop a course. Failed. Student doesn't enroll in this course. ");
         return false;
     }
+
+
     public String getStudentId() {
         return StudentId;
     }

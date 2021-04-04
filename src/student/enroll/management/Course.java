@@ -23,11 +23,7 @@ public class Course {
         studentList.add(student);
         return true;
     }
-    public void printStudents(){
-        for(Student s : studentList){
-            System.out.println(s.getStudentName() + ", with " + s.getStudentId() + " dob: " + s.getBirthDate());
-        }
-    }
+
 
     public String getCourseId() {
         return courseId;
