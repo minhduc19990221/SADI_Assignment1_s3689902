@@ -34,6 +34,14 @@ public class SemesterEnrollment {
         }
         return student;
     }
+    public void printAllCourse_Semester(){
+        for(Course c : courseArrayList){
+            System.out.println("Name: " + c.getCourseName());
+            System.out.println("Course ID: " + c.getCourseId());
+            System.out.println("Credits: " + c.getCredits());
+            System.out.println("---------------");
+        }
+    }
 
     public ArrayList<Course> getCourseArrayList() {
         return courseArrayList;

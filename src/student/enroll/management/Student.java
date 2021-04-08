@@ -32,6 +32,15 @@ public class Student {
         System.out.println("Attempt to drop a course. Failed. Student doesn't enroll in this course. ");
         return false;
     }
+    public void printAllCourse() {
+        for(Course c : coursesListPersonal){
+                System.out.println("Here is the list of enrolled course of the student in this semester... ");
+                System.out.println("Name: "+c.getCourseName());
+                System.out.println("Course ID: " + c.getCourseId());
+                System.out.println("Credits: " + c.getCourseId());
+        }
+
+    }
 
     public ArrayList<Course> getCoursesListPersonal() {
         return coursesListPersonal;
