@@ -1,6 +1,7 @@
 package student.enroll.management;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class StudentEnrollmentSystem implements StudentEnrollmentManager {
 
@@ -17,6 +18,7 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
 
         return studentList;
     }
+
     public ArrayList<Course> displayCourseList () {
 
         return courseList;

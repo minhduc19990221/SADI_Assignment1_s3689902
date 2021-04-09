@@ -1,21 +1,34 @@
 package student.enroll.management;
+import com.opencsv.CSVWriter;
+
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main {
-
-    public static void main(String[] args) throws ParseException {
+    private static final String SAMPLE_CSV ="./dataInput.csv";
+    public static void main(String[] args) throws ParseException, IOException {
         System.out.println("""
                 Welcome to Student System Management
                 -------------------------
                 Please proceed to the menu for further actions""");
         // enhance default --------------------------------------------------------------------------------
+
+        File fileInput = new File("C:\\Users\\MyPC\\IdeaProjects\\SADI_Assignment1_s3689902\\dataInput.csv");
+        FileWriter fileOutput = new FileWriter("C:\\Users\\MyPC\\IdeaProjects\\SADI_Assignment1_s3689902\\dataOutput.csv");
+        CSVWriter writer = new CSVWriter(fileOutput);
+        Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV));
         StudentEnrollmentSystem ses = new StudentEnrollmentSystem();
         char exit = 'y';
         Scanner input = new Scanner(System.in);
+        String fileIn = "dataInput.csv";
+        String fileOut = "dataOutput.csv";
+        String line = null;
         while(exit!='n'){
             try {
                 InputStreamReader isr = new InputStreamReader(System.in);
@@ -25,6 +38,7 @@ public class Main {
                 System.out.println("[1] Student");
                 System.out.println("[2] Course");
                 System.out.println("[3] Enroll");
+                System.out.println("[4] Pre-populate data");
                 System.out.print("Choice: ");
                 choice = Integer.parseInt(br.readLine());
                 switch (choice) {
@@ -102,8 +116,6 @@ public class Main {
                                 String semesterName_input = printCourseInput.nextLine();
                                 System.out.println("Proceed to print...");
                                 ses.getSemesterObject(semesterName_input).getStudentObject(studentID_input).printAllCourse();
-
-
                             }
                             default -> {
                                 System.out.println("Choice not found! ");
@@ -180,16 +192,20 @@ public class Main {
                                 break;
                             }
                             case 6 -> {
-                                System.out.println("Attempt to print all the students in a semester of a course...");
-                                Scanner course_input = new Scanner(System.in);
-                                System.out.println("Please enter course ID: ");
-                                String courseID_input = course_input.nextLine();
-                                System.out.println("Please enter semester name: ");
-                                String semesterCourse_input = course_input.nextLine();
-                                System.out.println("Proceed to print...");
-                                ses.getSemesterObject(semesterCourse_input).getCourseObject(courseID_input).printAllStudent();
-                                System.out.println("End..");
-                                break;
+                                try{
+                                    System.out.println("Attempt to print all the students in a semester of a course...");
+                                    Scanner course_input = new Scanner(System.in);
+                                    System.out.println("Please enter course ID: ");
+                                    String courseID_input = course_input.nextLine();
+                                    System.out.println("Please enter semester name: ");
+                                    String semesterCourse_input = course_input.nextLine();
+                                    System.out.println("Proceed to print...");
+                                    ses.getSemesterObject(semesterCourse_input).getCourseObject(courseID_input).printAllStudent();
+                                    System.out.println("End..");
+                                    break;
+                                }
+                                catch (NullPointerException e){e.printStackTrace();}
+
                             }
                             default -> {
                                 System.out.println("Choice not found! ");
@@ -211,24 +227,26 @@ public class Main {
                         enrollChoice = input.nextInt();
                         switch (enrollChoice) {
                             case 1 -> {
-                                String courseInput;
-                                String semesterName;
-                                Course courseEnroll;
-                                System.out.println("Attempt to enlist a course to a semester...");
-                                System.out.println("Please be noted that course must be created in advance.");
-                                Scanner enlist = new Scanner(System.in);
-                                System.out.println("Please enter the course ID: ");
-                                courseInput = enlist.nextLine();
-                                courseEnroll = ses.getCourseObject(courseInput);
-                                System.out.println("Please enter the semester name: ");
-                                semesterName = enlist.nextLine();
-                                if (ses.getSemesterObject(semesterName).getCourseArrayList().contains(courseEnroll)) {
+                                try{
+                                    String courseInput;
+                                    String semesterName;
+                                    Course courseEnroll;
+                                    System.out.println("Attempt to enlist a course to a semester...");
+                                    System.out.println("Please be noted that course must be created in advance.");
+                                    Scanner enlist = new Scanner(System.in);
+                                    System.out.println("Please enter the course ID: ");
+                                    courseInput = enlist.nextLine();
+                                    courseEnroll = ses.getCourseObject(courseInput);
+                                    System.out.println("Please enter the semester name: ");
+                                    semesterName = enlist.nextLine();
                                     System.out.println("Course already enlisted!");
-                                } else {
                                     System.out.println("Adding Course related: ");
                                     ses.getSemesterObject(semesterName).getCourseArrayList().add(courseEnroll);
                                     System.out.println("Success!");
+                                    break;
+
                                 }
+                                catch (NullPointerException e){e.printStackTrace();}
                                 break;
                             }
                             case 2 -> {
@@ -297,35 +315,33 @@ public class Main {
                                 }
                             }
                             case 5 -> {
-                                String studentID_enroll;
-                                String semesterName_enroll;
-                                String courseID_enroll;
-                                SemesterEnrollment semester_enroll;
-                                Student student_enroll;
-                                Course course_enroll;
-                                Scanner enroll = new Scanner(System.in);
-                                System.out.println("Attempt to enroll a student to a course in a semester...");
-                                System.out.println("Please be noted that student, course, and semester must be created in advance");
-                                System.out.println("Please enter Student ID: ");
-                                studentID_enroll = enroll.nextLine();
-                                student_enroll = ses.getStudentObject(studentID_enroll);
-                                System.out.println("Please enter the course ID: ");
-                                courseID_enroll = enroll.nextLine();
-                                course_enroll = ses.getCourseObject(courseID_enroll);
-                                System.out.println("Please enter the semester name: ");
-                                semesterName_enroll = enroll.nextLine();
-                                semester_enroll = ses.getSemesterObject(semesterName_enroll);
-                                if (semester_enroll.getCourseObject(courseID_enroll).getStudentList().contains(student_enroll)
-                                        || semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal().contains(course_enroll)) {
-                                    System.out.println("Enroll failed! Student already in this course.");
-                                    break;
-                                } else {
+                                try{
+                                    String studentID_enroll;
+                                    String semesterName_enroll;
+                                    String courseID_enroll;
+                                    SemesterEnrollment semester_enroll;
+                                    Student student_enroll;
+                                    Course course_enroll;
+                                    Scanner enroll = new Scanner(System.in);
+                                    System.out.println("Attempt to enroll a student to a course in a semester...");
+                                    System.out.println("Please be noted that student, course, and semester must be created in advance");
+                                    System.out.println("Please enter Student ID: ");
+                                    studentID_enroll = enroll.nextLine();
+                                    student_enroll = ses.getStudentObject(studentID_enroll);
+                                    System.out.println("Please enter the course ID: ");
+                                    courseID_enroll = enroll.nextLine();
+                                    course_enroll = ses.getCourseObject(courseID_enroll);
+                                    System.out.println("Please enter the semester name: ");
+                                    semesterName_enroll = enroll.nextLine();
+                                    semester_enroll = ses.getSemesterObject(semesterName_enroll);
                                     System.out.println("Proceed to enroll...");
                                     semester_enroll.getCourseObject(courseID_enroll).getStudentList().add(student_enroll);
                                     semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal().add(course_enroll);
                                     System.out.println("Success!");
                                     break;
                                 }
+                                catch (NullPointerException e){e.printStackTrace();}
+
                             }
                             case 6 -> {
                                 System.out.println("View all course in a semester... ");
@@ -335,6 +351,25 @@ public class Main {
                                 ses.getSemesterObject(semesterName_input).printAllCourse_Semester();
                                 System.out.println("End...");
                             }
+                        }
+                    }
+                    case 4 -> {
+                        try {
+                            FileReader fileReader = new FileReader(fileIn);
+                            BufferedReader bufferedReader = new BufferedReader(fileReader);
+                            line = "";
+                            while ((line = bufferedReader.readLine()) != null) {
+                                String[] temp = line.split(",");
+                                int studentID = Integer.parseInt(temp[0]);
+                                String firstName = temp[1];
+                                String lastName = temp[2];
+                                int finalMark = Integer.parseInt(temp[3]);
+                                String finalGrade = temp[4];
+
+                            }
+                            bufferedReader.close();
+                        } catch (FileNotFoundException e) {
+
                         }
                     }
                     default -> {
@@ -349,28 +384,30 @@ public class Main {
             }
         }
     }
-    public void readData() throws IOException {
-        int count = 0;
-        String fileIn = "dataInput.csv";
-        String fileOut = "dataOutput.csv";
-        String line = null;
-        try {
-            FileReader fileReader = new FileReader(fileIn);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            line = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] temp = line.split(",");
-                int studentID = Integer.parseInt(temp[0]);
-                String firstName = temp[1];
-                String lastName = temp[2];
-                int finalMark = Integer.parseInt(temp[3]);
-                String finalGrade = temp[4];
-                studentList.add(new Student(studentID, firstName, lastName, finalMark, finalGrade));
+    private static final String CSV_SEPARATOR = ",";
+    private static void writeToCSV(ArrayList<Student> studentsList)
+    {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("products.csv"), "UTF-8"));
+            for (Student student : studentsList)
+            {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(student.getStudentId());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(student.getStudentName().trim().length() == 0? "" : student.getStudentName());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(student.getBirthDate());
+                oneLine.append(CSV_SEPARATOR);
+                bw.write(oneLine.toString());
+                bw.newLine();
             }
-            bufferedReader.close();
-        } catch (FileNotFoundException e) {
-
+            bw.flush();
+            bw.close();
         }
+        catch (UnsupportedEncodingException e) {}
+        catch (FileNotFoundException e){}
+        catch (IOException e){}
     }
 }
 

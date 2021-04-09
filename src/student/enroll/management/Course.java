@@ -12,7 +12,7 @@ public class Course {
         this.courseId = courseId;
         this.courseName = courseName;
         this.credits = credits;
-        this.studentList = studentList;
+        studentList = new ArrayList<Student>();
     }
 
     public boolean addStudent(Student student){

@@ -13,7 +13,7 @@ public class Student {
         this.StudentId = studentId;
         this.StudentName = studentName;
         this.birthDate = birthDate;
-        this.coursesListPersonal = new ArrayList<Course>();
+        coursesListPersonal = new ArrayList<Course>();
     }
     public boolean addCourse(Course course){
         if (course==null || coursesListPersonal.contains(course)){

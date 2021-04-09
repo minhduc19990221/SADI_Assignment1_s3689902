@@ -9,7 +9,10 @@ public class SemesterEnrollment {
 
     public SemesterEnrollment(String semesterName) {
         this.semesterName = semesterName;
+        courseArrayList = new ArrayList<Course>();
+        studentArrayList = new ArrayList<Student>();
     }
+
 
     public String getSemesterName() {
         return semesterName;
@@ -21,7 +24,11 @@ public class SemesterEnrollment {
     public Course getCourseObject(String id){
         Course course = null;
         for(Course c : courseArrayList){
-            if(c.getCourseId().equals(id)){course = c;}
+            if(c.getCourseId().equals(id)){
+                course.setCourseId(c.getCourseId());
+                course.setCourseName(c.getCourseName());
+                course.setCredits(c.getCredits());
+            }
             else{ return null; }
         }
         return course;
@@ -29,7 +36,11 @@ public class SemesterEnrollment {
     public Student getStudentObject(String id){
         Student student = null;
         for(Student s : studentArrayList){
-            if(s.getStudentId().equals(id)){student = s;}
+            if(s.getStudentId().equals(id)){
+                student.setBirthDate(s.getBirthDate());
+                student.setStudentId(s.getStudentId());
+                student.setStudentName(s.getStudentName());
+            }
             else{ return null; }
         }
         return student;

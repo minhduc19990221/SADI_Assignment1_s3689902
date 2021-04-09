@@ -37,4 +37,24 @@ class CourseTest {
     @Test
     void setCredits() {
     }
+
+    @Test
+    void removeStudent() {
+    }
+
+    @Test
+    void printOneStudent() {
+    }
+
+    @Test
+    void printAllStudent() {
+    }
+
+    @Test
+    void getStudentList() {
+    }
+
+    @Test
+    void setStudentList() {
+    }
 }
