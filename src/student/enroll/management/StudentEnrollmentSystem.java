@@ -14,6 +14,7 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
         semesterLists = new ArrayList<SemesterEnrollment>();
     }
 
+
     public ArrayList<Student> displayStudentList () {
 
         return studentList;

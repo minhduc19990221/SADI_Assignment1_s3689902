@@ -1,9 +1,5 @@
 package student.enroll.management;
-import com.opencsv.CSVWriter;
-
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -18,11 +14,6 @@ public class Main {
                 -------------------------
                 Please proceed to the menu for further actions""");
         // enhance default --------------------------------------------------------------------------------
-
-        File fileInput = new File("C:\\Users\\MyPC\\IdeaProjects\\SADI_Assignment1_s3689902\\dataInput.csv");
-        FileWriter fileOutput = new FileWriter("C:\\Users\\MyPC\\IdeaProjects\\SADI_Assignment1_s3689902\\dataOutput.csv");
-        CSVWriter writer = new CSVWriter(fileOutput);
-        Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV));
         StudentEnrollmentSystem ses = new StudentEnrollmentSystem();
         char exit = 'y';
         Scanner input = new Scanner(System.in);
@@ -66,6 +57,7 @@ public class Main {
                                 Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
                                 Student student = new Student(studentId, name, birthDate);
                                 ses.addStudent(student);
+                                writeToCSV_Student(ses.displayStudentList());
                                 System.out.println("Student: " + student.getStudentName() + " has successfully created");
                                 System.out.println("At index of: " + ses.displayStudentList().indexOf(student));
                             }
@@ -146,7 +138,8 @@ public class Main {
                                 int credits = input.nextInt();
                                 Course course = new Course(courseId, CourseName, credits);
                                 ses.addCourse(course);
-                                System.out.println("Student: " + course.getCourseName() + " has successfully created");
+                                writeToCSV_Course(ses.displayCourseList());
+                                System.out.println("Course: " + course.getCourseId() + " " + course.getCourseName() + " has successfully created");
                                 System.out.println("At index of: " + ses.displayCourseList().indexOf(course));
                                 break;
                             }
@@ -337,6 +330,9 @@ public class Main {
                                     System.out.println("Proceed to enroll...");
                                     semester_enroll.getCourseObject(courseID_enroll).getStudentList().add(student_enroll);
                                     semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal().add(course_enroll);
+                                    writeToCSV_Student(semester_enroll.getCourseObject(courseID_enroll).getStudentList());
+                                    writeToCSV_Course(semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal());
+                                    writeToCSV_Semester(ses.displaySemesterList());
                                     System.out.println("Success!");
                                     break;
                                 }
@@ -385,11 +381,11 @@ public class Main {
         }
     }
     private static final String CSV_SEPARATOR = ",";
-    private static void writeToCSV(ArrayList<Student> studentsList)
+    private static void writeToCSV_Student(ArrayList<Student> studentsList)
     {
         try
         {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("products.csv"), "UTF-8"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("students.csv", true));
             for (Student student : studentsList)
             {
                 StringBuffer oneLine = new StringBuffer();
@@ -405,9 +401,57 @@ public class Main {
             bw.flush();
             bw.close();
         }
-        catch (UnsupportedEncodingException e) {}
-        catch (FileNotFoundException e){}
-        catch (IOException e){}
+        catch (UnsupportedEncodingException e) {e.printStackTrace();}
+        catch (FileNotFoundException e){e.printStackTrace();}
+        catch (IOException e){e.printStackTrace();}
+    }
+    private static void writeToCSV_Course(ArrayList<Course> coursesList)
+    {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("courses.csv", true));
+            for (Course course : coursesList)
+            {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(course.getCourseId());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(course.getCourseName().trim().length() == 0? "" : course.getCourseName());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(course.getCredits());
+                oneLine.append(CSV_SEPARATOR);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        }
+        catch (UnsupportedEncodingException e) {e.printStackTrace();}
+        catch (FileNotFoundException e){e.printStackTrace();}
+        catch (IOException e){e.printStackTrace();}
+    }
+    private static void writeToCSV_Semester(ArrayList<SemesterEnrollment> semesterEnrollmentsList)
+    {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("semesters.csv", true));
+            for (SemesterEnrollment semester : semesterEnrollmentsList)
+            {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(semester.getSemesterName());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(semester.getCourseArrayList());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(semester.getStudentArrayList());
+                oneLine.append(CSV_SEPARATOR);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        }
+        catch (UnsupportedEncodingException e) {e.printStackTrace();}
+        catch (FileNotFoundException e){e.printStackTrace();}
+        catch (IOException e){e.printStackTrace();}
     }
 }
 

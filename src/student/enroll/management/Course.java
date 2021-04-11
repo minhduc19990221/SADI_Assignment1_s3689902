@@ -30,7 +30,7 @@ public class Course {
             System.out.println("Success!");
             return true;
         }
-        System.out.println("Can't find the student! Error");;
+        System.out.println("Can't find the student! Error");
         return true;
     }
     public void printOneStudent(String id) {
