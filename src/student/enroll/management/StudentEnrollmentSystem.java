@@ -195,12 +195,9 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     public Student createStudent_ForCSV(String[] metadata) throws ParseException {
         String name = metadata[0];
         String studentId = metadata[1];
-
         String dateAdjust = metadata[2];
-        Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateAdjust);
-
         // create and return book of this metadata
-        return new Student(name, studentId, birthDate);
+        return new Student(name, studentId, dateAdjust);
     }
     public Course createCourse_ForCSV(String[] metadata) throws ParseException {
         String courseName = metadata[0];

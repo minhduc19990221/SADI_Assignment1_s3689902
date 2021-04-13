@@ -6,10 +6,10 @@ import java.util.Date;
 public class Student {
     private String StudentId;
     private String StudentName;
-    private Date birthDate;
+    private String birthDate;
     private ArrayList<Course> coursesListPersonal = new ArrayList<Course>();
 
-    public Student(String studentId, String studentName, Date birthDate) {
+    public Student(String studentId, String studentName, String birthDate) {
         this.StudentId = studentId;
         this.StudentName = studentName;
         this.birthDate = birthDate;
@@ -66,11 +66,11 @@ public class Student {
         StudentName = studentName;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 }

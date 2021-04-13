@@ -15,11 +15,8 @@ class CourseTest {
     void addStudent() throws ParseException {
         Course c = new Course("1", "SADI", 12);
         String date = "21/02/1999";
-        Date dateTest = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-        Student s = new Student("1", "HUng", dateTest);
+        Student s = new Student("1", "HUng", date);
         assertTrue(c.addStudent(s));
-
-
     }
 
     @Test

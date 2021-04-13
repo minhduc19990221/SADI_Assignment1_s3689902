@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main {
-    private static final String SAMPLE_CSV ="./dataInput.csv";
-    public static void main(String[] args) throws ParseException, IOException {
+
+    public static void main(String[] args) throws ParseException {
         System.out.println("""
                 Welcome to Student System Management
                 -------------------------
@@ -24,7 +24,7 @@ public class Main {
                 System.out.println("\nMenu");
                 System.out.println("[1] Student");
                 System.out.println("[2] Course");
-                System.out.println("[3] Enroll");
+                System.out.println("[3] Semester/Enroll");
                 System.out.println("[4] Pre-populate data");
                 System.out.print("Choice: ");
                 choice = Integer.parseInt(br.readLine());
@@ -50,10 +50,9 @@ public class Main {
                                 String name = nameInput.nextLine();
                                 System.out.print("\nEnter Student birthDate (dd/MM/yyyy): ");
                                 String date = input.next();
-                                Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-                                Student student = new Student(studentId, name, birthDate);
+                                Student student = new Student(studentId, name, date);
                                 ses.addStudent(student);
-                                ses.writeToCSV_Student(ses.displayStudentList());
+                                StudentEnrollmentSystem.writeToCSV_Student(ses.displayStudentList());
                                 System.out.println("Student: " + student.getStudentName() + " has successfully created");
                                 System.out.println("At index of: " + ses.displayStudentList().indexOf(student));
                             }
@@ -80,8 +79,7 @@ public class Main {
                                 String nameAdjust = nameInputAdjust.nextLine();
                                 System.out.print("\nEnter new Student birthDate (dd/MM/yyyy): ");
                                 String dateAdjust = input.next();
-                                Date birthDateAdjust = new SimpleDateFormat("dd/MM/yyyy").parse(dateAdjust);
-                                Student studentAdjust = new Student(studentIdAdjust, nameAdjust, birthDateAdjust);
+                                Student studentAdjust = new Student(studentIdAdjust, nameAdjust, dateAdjust);
                                 ses.modifyStudent(studentAdjust, studentUpdate);
                             }
                             case 4 -> {
@@ -134,10 +132,9 @@ public class Main {
                                 int credits = input.nextInt();
                                 Course course = new Course(courseId, CourseName, credits);
                                 ses.addCourse(course);
-                                ses.writeToCSV_Course(ses.displayCourseList());
+                                StudentEnrollmentSystem.writeToCSV_Course(ses.displayCourseList());
                                 System.out.println("Course: " + course.getCourseId() + " " + course.getCourseName() + " has successfully created");
                                 System.out.println("At index of: " + ses.displayCourseList().indexOf(course));
-                                break;
                             }
                             case 2 -> {
                                 System.out.println("\nAttempt to remove a course.");
@@ -148,7 +145,6 @@ public class Main {
                                 System.out.println("Deleting...");
                                 ses.displayCourseList().remove(ses.getCourseObject(courseRemove));
                                 System.out.println("Success!");
-                                break;
                             }
                             case 3 -> {
                                 Course courseUpdate;
@@ -165,7 +161,6 @@ public class Main {
                                 int creditsAdjust = input.nextInt();
                                 Course courseAdjust = new Course(courseIdAdjust, CourseNameAdjust, creditsAdjust);
                                 ses.modifyCourse(courseAdjust, courseUpdate);
-                                break;
                             }
                             case 4 -> {
                                 Scanner idSearch = new Scanner(System.in);
@@ -173,12 +168,10 @@ public class Main {
                                 System.out.println("Enter the Course ID to view: ");
                                 view = idSearch.nextLine();
                                 ses.getCourse(view);
-                                break;
                             }
                             case 5 -> {
                                 System.out.println("Here is the list of available courses: ");
                                 ses.printCourse();
-                                break;
                             }
                             case 6 -> {
                                 try{
@@ -191,7 +184,6 @@ public class Main {
                                     System.out.println("Proceed to print...");
                                     ses.getSemesterObject(semesterCourse_input).getCourseObject(courseID_input).printAllStudent();
                                     System.out.println("End..");
-                                    break;
                                 }
                                 catch (NullPointerException e){e.printStackTrace();}
 
@@ -199,9 +191,7 @@ public class Main {
                             default -> {
                                 System.out.println("Choice not found! ");
                                 System.out.println("\nDo it again? 1 2 3 4");
-                                int choice2 = input.nextInt();
-                                courseChoice = choice2;
-                                break;
+                                courseChoice = input.nextInt();
                             }
                         }
                     }
@@ -232,11 +222,9 @@ public class Main {
                                     System.out.println("Adding Course related: ");
                                     ses.getSemesterObject(semesterName).getCourseArrayList().add(courseEnroll);
                                     System.out.println("Success!");
-                                    break;
 
                                 }
                                 catch (NullPointerException e){e.printStackTrace();}
-                                break;
                             }
                             case 2 -> {
                                 System.out.println("Attempt to delete a semester");
@@ -281,10 +269,8 @@ public class Main {
                                     semesterUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().add(courseNewUpdateEnroll);
                                     semesterUpdate.getCourseObject(courseNewUpdate).getStudentList().add(studentEnrollUpdate);
                                     System.out.println("Successfully updated");
-                                    break;
                                 } else {
                                     System.out.println("Student not found :(");
-                                    break;
                                 }
                             }
                             case 4 -> {
@@ -295,12 +281,10 @@ public class Main {
                                 Semester semesterCreate = new Semester(semesterNameCreate);
                                 if (ses.displaySemesterList().contains(semesterCreate)) {
                                     System.out.println("Error! Semester already created.");
-                                    break;
                                 } else {
                                     System.out.println("Prompt to create a semester.");
                                     ses.displaySemesterList().add(semesterCreate);
                                     System.out.println("Success!");
-                                    break;
                                 }
                             }
                             case 5 -> {
@@ -326,11 +310,10 @@ public class Main {
                                     System.out.println("Proceed to enroll...");
                                     semester_enroll.getCourseObject(courseID_enroll).getStudentList().add(student_enroll);
                                     semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal().add(course_enroll);
-                                    ses.writeToCSV_Student(semester_enroll.getCourseObject(courseID_enroll).getStudentList());
-                                    ses.writeToCSV_Course(semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal());
-                                    ses.writeToCSV_Semester(ses.displaySemesterList());
+                                    StudentEnrollmentSystem.writeToCSV_Student(semester_enroll.getCourseObject(courseID_enroll).getStudentList());
+                                    StudentEnrollmentSystem.writeToCSV_Course(semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal());
+                                    StudentEnrollmentSystem.writeToCSV_Semester(ses.displaySemesterList());
                                     System.out.println("Success!");
-                                    break;
                                 }
                                 catch (NullPointerException e){e.printStackTrace();}
 
