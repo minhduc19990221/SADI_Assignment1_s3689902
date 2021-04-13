@@ -22,6 +22,19 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     }
 
 
+    public void setStudentList(ArrayList<Student> studentList) {
+        this.studentList = studentList;
+    }
+
+    public void setCourseList(ArrayList<Course> courseList) {
+        this.courseList = courseList;
+    }
+
+
+    public void setSemesterLists(ArrayList<Semester> semesterLists) {
+        this.semesterLists = semesterLists;
+    }
+
     public ArrayList<Student> displayStudentList () {
 
         return studentList;

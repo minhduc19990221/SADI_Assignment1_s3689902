@@ -284,6 +284,7 @@ public class Main {
                                 } else {
                                     System.out.println("Prompt to create a semester.");
                                     ses.displaySemesterList().add(semesterCreate);
+                                    StudentEnrollmentSystem.writeToCSV_Semester(ses.displaySemesterList());
                                     System.out.println("Success!");
                                 }
                             }
@@ -330,9 +331,8 @@ public class Main {
                     }
                     case 4 -> {
                         System.out.println("Attempt to populate data...");
-                        ses.readStudentFromCSV("students.csv");
-                        ses.readCourseFromCSV("courses.csv");
-                        ses.readSemesterFromCSV("semesters.csv");
+                        ses.setStudentList(ses.readStudentFromCSV("students.csv"));
+                        ses.setCourseList(ses.readCourseFromCSV("courses.csv"));
                         System.out.println("Success...!");
                     }
                     default -> {
