@@ -332,6 +332,7 @@ public class Main {
                         System.out.println("Attempt to populate data...");
                         ses.readStudentFromCSV("students.csv");
                         ses.readCourseFromCSV("courses.csv");
+                        ses.readSemesterFromCSV("semesters.csv");
                         System.out.println("Success...!");
                     }
                     default -> {

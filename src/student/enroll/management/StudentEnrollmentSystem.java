@@ -192,19 +192,37 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
         }
         return courses;
     }
+    public ArrayList<Semester> readSemesterFromCSV (String filename) throws IOException, ParseException {
+        ArrayList<Semester> semesters =new ArrayList<>();
+        Path pathToFile = Paths.get(filename);
+        BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII);
+        String line = br.readLine();
+        while (line != null){
+            String[] attributes = line.split(",");
+            Semester semester = createSemester_ForCSV(attributes);
+            semesters.add(semester);
+            line = br.readLine();
+        }
+        return semesters;
+    }
     public Student createStudent_ForCSV(String[] metadata) throws ParseException {
         String name = metadata[0];
         String studentId = metadata[1];
         String dateAdjust = metadata[2];
-        // create and return book of this metadata
+        // create and return of this metadata
         return new Student(name, studentId, dateAdjust);
     }
     public Course createCourse_ForCSV(String[] metadata) throws ParseException {
         String courseName = metadata[0];
         String courseID = metadata[1];
         int credit = Integer.parseInt(metadata[2]);
-        // create and return book of this metadata
+        // create and return of this metadata
         return new Course(courseName, courseID, credit);
+    }
+    public Semester createSemester_ForCSV(String[] metadata) throws ParseException {
+        String semesterName = metadata[0];
+        // create and return of this metadata
+        return new Semester(semesterName);
     }
     private static final String CSV_SEPARATOR = ",";
     static void writeToCSV_Student(ArrayList<Student> studentsList)
@@ -228,6 +246,7 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
             bw.close();
         } catch (IOException e) {e.printStackTrace();}
     }
+
     static void writeToCSV_Course(ArrayList<Course> coursesList)
     {
         try
