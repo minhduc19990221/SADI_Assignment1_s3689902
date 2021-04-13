@@ -31,37 +31,22 @@ public class Course {
             return true;
         }
         System.out.println("Can't find the student! Error");
-        return true;
+        return false;
     }
-    public void printOneStudent(String id) {
-        for(Student s : studentList){
-            if(s.getStudentId().equals(id)){
-                System.out.println("Here is the info of the required student: ");
-                System.out.println("Name: "+s.getStudentName());
-                System.out.println("Student ID: " + s.getStudentId());
-                System.out.println("DOB: " + s.getBirthDate());
-            }
-            else{
-                System.out.println("Student not found!");
-            }
-        }
-    }
-    public void printAllStudent() {
+
+    public String printAllStudent() {
         for(Student s : studentList){
                 System.out.println("Here is the info of the required student... ");
                 System.out.println("Name: "+s.getStudentName());
                 System.out.println("Student ID: " + s.getStudentId());
                 System.out.println("DOB: " + s.getBirthDate());
             }
-        }
+        return "";
+    }
 
 
     public ArrayList<Student> getStudentList() {
         return studentList;
-    }
-
-    public void setStudentList(ArrayList<Student> studentList) {
-        this.studentList = studentList;
     }
 
     public String getCourseId() {

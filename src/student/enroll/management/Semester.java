@@ -46,13 +46,14 @@ public class Semester {
         }
         return student;
     }
-    public void printAllCourse_Semester(){
+    public boolean printAllCourse_Semester(){
         for(Course c : courseArrayList){
             System.out.println("Name: " + c.getCourseName());
             System.out.println("Course ID: " + c.getCourseId());
             System.out.println("Credits: " + c.getCredits());
             System.out.println("---------------");
         }
+        return true;
     }
 
     public ArrayList<Course> getCourseArrayList() {
