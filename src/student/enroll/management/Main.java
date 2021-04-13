@@ -1,7 +1,6 @@
 package student.enroll.management;
 import java.io.*;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,9 +16,6 @@ public class Main {
         StudentEnrollmentSystem ses = new StudentEnrollmentSystem();
         char exit = 'y';
         Scanner input = new Scanner(System.in);
-        String fileIn = "dataInput.csv";
-        String fileOut = "dataOutput.csv";
-        String line = null;
         while(exit!='n'){
             try {
                 InputStreamReader isr = new InputStreamReader(System.in);
@@ -57,7 +53,7 @@ public class Main {
                                 Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
                                 Student student = new Student(studentId, name, birthDate);
                                 ses.addStudent(student);
-                                writeToCSV_Student(ses.displayStudentList());
+                                ses.writeToCSV_Student(ses.displayStudentList());
                                 System.out.println("Student: " + student.getStudentName() + " has successfully created");
                                 System.out.println("At index of: " + ses.displayStudentList().indexOf(student));
                             }
@@ -138,7 +134,7 @@ public class Main {
                                 int credits = input.nextInt();
                                 Course course = new Course(courseId, CourseName, credits);
                                 ses.addCourse(course);
-                                writeToCSV_Course(ses.displayCourseList());
+                                ses.writeToCSV_Course(ses.displayCourseList());
                                 System.out.println("Course: " + course.getCourseId() + " " + course.getCourseName() + " has successfully created");
                                 System.out.println("At index of: " + ses.displayCourseList().indexOf(course));
                                 break;
@@ -245,12 +241,12 @@ public class Main {
                             case 2 -> {
                                 System.out.println("Attempt to delete a semester");
                                 String semesterNameDelete;
-                                SemesterEnrollment semesterEnrollment;
+                                Semester semester;
                                 Scanner deleteSemesterInput = new Scanner(System.in);
                                 System.out.println("Please enter semester name to delete: ");
                                 semesterNameDelete = deleteSemesterInput.nextLine();
-                                semesterEnrollment = ses.getSemesterObject(semesterNameDelete);
-                                ses.displaySemesterList().remove(semesterEnrollment);
+                                semester = ses.getSemesterObject(semesterNameDelete);
+                                ses.displaySemesterList().remove(semester);
                                 System.out.println("Success!");
                             }
                             case 3 -> {
@@ -261,12 +257,12 @@ public class Main {
                                 Course courseEnrollUpdate;
                                 Course courseNewUpdateEnroll;
                                 Student studentEnrollUpdate;
-                                SemesterEnrollment semesterEnrollmentUpdate;
+                                Semester semesterUpdate;
                                 System.out.println("Attempt to update a semester...");
                                 Scanner enrollUpdate = new Scanner(System.in);
                                 System.out.println("Please enter the semester name to proceed: ");
                                 semesterNameUpdate = enrollUpdate.nextLine();
-                                semesterEnrollmentUpdate = ses.getSemesterObject(semesterNameUpdate);
+                                semesterUpdate = ses.getSemesterObject(semesterNameUpdate);
                                 System.out.println("Please enter the student ID: ");
                                 studentInputUpdate = enrollUpdate.nextLine();
                                 studentEnrollUpdate = ses.getStudentObject(studentInputUpdate);
@@ -276,14 +272,14 @@ public class Main {
                                 System.out.println("Please enter the new course ID: ");
                                 courseNewUpdate = enrollUpdate.nextLine();
                                 courseNewUpdateEnroll = ses.getCourseObject(courseNewUpdate);
-                                if (semesterEnrollmentUpdate.getCourseObject(courseInputUpdate).getStudentList().contains(studentEnrollUpdate)
-                                        || semesterEnrollmentUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().contains(courseEnrollUpdate)) {
+                                if (semesterUpdate.getCourseObject(courseInputUpdate).getStudentList().contains(studentEnrollUpdate)
+                                        || semesterUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().contains(courseEnrollUpdate)) {
                                     System.out.println("Student found! Attempt to update the enrollment....");
-                                    semesterEnrollmentUpdate.getCourseObject(courseInputUpdate).getStudentList().remove(studentEnrollUpdate);
-                                    semesterEnrollmentUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().remove(courseEnrollUpdate);
+                                    semesterUpdate.getCourseObject(courseInputUpdate).getStudentList().remove(studentEnrollUpdate);
+                                    semesterUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().remove(courseEnrollUpdate);
                                     System.out.println("Successfully removed the old enrollment...");
-                                    semesterEnrollmentUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().add(courseNewUpdateEnroll);
-                                    semesterEnrollmentUpdate.getCourseObject(courseNewUpdate).getStudentList().add(studentEnrollUpdate);
+                                    semesterUpdate.getStudentObject(studentInputUpdate).getCoursesListPersonal().add(courseNewUpdateEnroll);
+                                    semesterUpdate.getCourseObject(courseNewUpdate).getStudentList().add(studentEnrollUpdate);
                                     System.out.println("Successfully updated");
                                     break;
                                 } else {
@@ -296,7 +292,7 @@ public class Main {
                                 Scanner semesterNameInput = new Scanner(System.in);
                                 System.out.println("Please enter a semester name: ");
                                 String semesterNameCreate = semesterNameInput.nextLine();
-                                SemesterEnrollment semesterCreate = new SemesterEnrollment(semesterNameCreate);
+                                Semester semesterCreate = new Semester(semesterNameCreate);
                                 if (ses.displaySemesterList().contains(semesterCreate)) {
                                     System.out.println("Error! Semester already created.");
                                     break;
@@ -312,7 +308,7 @@ public class Main {
                                     String studentID_enroll;
                                     String semesterName_enroll;
                                     String courseID_enroll;
-                                    SemesterEnrollment semester_enroll;
+                                    Semester semester_enroll;
                                     Student student_enroll;
                                     Course course_enroll;
                                     Scanner enroll = new Scanner(System.in);
@@ -330,9 +326,9 @@ public class Main {
                                     System.out.println("Proceed to enroll...");
                                     semester_enroll.getCourseObject(courseID_enroll).getStudentList().add(student_enroll);
                                     semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal().add(course_enroll);
-                                    writeToCSV_Student(semester_enroll.getCourseObject(courseID_enroll).getStudentList());
-                                    writeToCSV_Course(semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal());
-                                    writeToCSV_Semester(ses.displaySemesterList());
+                                    ses.writeToCSV_Student(semester_enroll.getCourseObject(courseID_enroll).getStudentList());
+                                    ses.writeToCSV_Course(semester_enroll.getStudentObject(studentID_enroll).getCoursesListPersonal());
+                                    ses.writeToCSV_Semester(ses.displaySemesterList());
                                     System.out.println("Success!");
                                     break;
                                 }
@@ -350,23 +346,10 @@ public class Main {
                         }
                     }
                     case 4 -> {
-                        try {
-                            FileReader fileReader = new FileReader(fileIn);
-                            BufferedReader bufferedReader = new BufferedReader(fileReader);
-                            line = "";
-                            while ((line = bufferedReader.readLine()) != null) {
-                                String[] temp = line.split(",");
-                                int studentID = Integer.parseInt(temp[0]);
-                                String firstName = temp[1];
-                                String lastName = temp[2];
-                                int finalMark = Integer.parseInt(temp[3]);
-                                String finalGrade = temp[4];
-
-                            }
-                            bufferedReader.close();
-                        } catch (FileNotFoundException e) {
-
-                        }
+                        System.out.println("Attempt to populate data...");
+                        ses.readStudentFromCSV("students.csv");
+                        ses.readCourseFromCSV("courses.csv");
+                        System.out.println("Success...!");
                     }
                     default -> {
                         System.out.println("Choice not found! ");
@@ -380,78 +363,6 @@ public class Main {
             }
         }
     }
-    private static final String CSV_SEPARATOR = ",";
-    private static void writeToCSV_Student(ArrayList<Student> studentsList)
-    {
-        try
-        {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("students.csv", true));
-            for (Student student : studentsList)
-            {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(student.getStudentId());
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(student.getStudentName().trim().length() == 0? "" : student.getStudentName());
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(student.getBirthDate());
-                oneLine.append(CSV_SEPARATOR);
-                bw.write(oneLine.toString());
-                bw.newLine();
-            }
-            bw.flush();
-            bw.close();
-        }
-        catch (UnsupportedEncodingException e) {e.printStackTrace();}
-        catch (FileNotFoundException e){e.printStackTrace();}
-        catch (IOException e){e.printStackTrace();}
-    }
-    private static void writeToCSV_Course(ArrayList<Course> coursesList)
-    {
-        try
-        {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("courses.csv", true));
-            for (Course course : coursesList)
-            {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(course.getCourseId());
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(course.getCourseName().trim().length() == 0? "" : course.getCourseName());
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(course.getCredits());
-                oneLine.append(CSV_SEPARATOR);
-                bw.write(oneLine.toString());
-                bw.newLine();
-            }
-            bw.flush();
-            bw.close();
-        }
-        catch (UnsupportedEncodingException e) {e.printStackTrace();}
-        catch (FileNotFoundException e){e.printStackTrace();}
-        catch (IOException e){e.printStackTrace();}
-    }
-    private static void writeToCSV_Semester(ArrayList<SemesterEnrollment> semesterEnrollmentsList)
-    {
-        try
-        {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("semesters.csv", true));
-            for (SemesterEnrollment semester : semesterEnrollmentsList)
-            {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(semester.getSemesterName());
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(semester.getCourseArrayList());
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(semester.getStudentArrayList());
-                oneLine.append(CSV_SEPARATOR);
-                bw.write(oneLine.toString());
-                bw.newLine();
-            }
-            bw.flush();
-            bw.close();
-        }
-        catch (UnsupportedEncodingException e) {e.printStackTrace();}
-        catch (FileNotFoundException e){e.printStackTrace();}
-        catch (IOException e){e.printStackTrace();}
-    }
+
 }
 

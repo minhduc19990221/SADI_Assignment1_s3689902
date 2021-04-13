@@ -1,17 +1,24 @@
 package student.enroll.management;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 class StudentEnrollmentSystem implements StudentEnrollmentManager {
 
     private ArrayList<Student> studentList;
     private ArrayList<Course> courseList;
-    private ArrayList<SemesterEnrollment> semesterLists;
+    private ArrayList<Semester> semesterLists;
     public StudentEnrollmentSystem() {
         studentList = new ArrayList<Student>();
         courseList = new ArrayList<Course>();
-        semesterLists = new ArrayList<SemesterEnrollment>();
+        semesterLists = new ArrayList<Semester>();
     }
 
 
@@ -25,7 +32,7 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
         return courseList;
     }
 
-    public ArrayList<SemesterEnrollment> displaySemesterList () {
+    public ArrayList<Semester> displaySemesterList () {
 
         return semesterLists;
     }
@@ -49,18 +56,18 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
         return course;
     }
     @Override
-    public SemesterEnrollment getSemesterObject(String name){
-        SemesterEnrollment semester = null;
-        for(SemesterEnrollment s : semesterLists){
+    public Semester getSemesterObject(String name){
+        Semester semester = null;
+        for(Semester s : semesterLists){
             if(s.getSemesterName().equals(name)){semester = s;}
             else{return null;}
         }
         return semester;
     }
     @Override
-    public void modifySemester(SemesterEnrollment semester, SemesterEnrollment semesterToUpdate){semesterLists.set(semesterLists.indexOf(semesterToUpdate), semester);}
+    public void modifySemester(Semester semester, Semester semesterToUpdate){semesterLists.set(semesterLists.indexOf(semesterToUpdate), semester);}
     public void getSemester(String name){
-        for(SemesterEnrollment s : semesterLists){
+        for(Semester s : semesterLists){
             if(s.getSemesterName().equals(name)){
                 System.out.println("Here is the info of the required semester: ");
                 System.out.println("Name: "+s.getSemesterName());
@@ -156,6 +163,115 @@ class StudentEnrollmentSystem implements StudentEnrollmentManager {
     @Override
     public void modifyStudent(Student s, Student studentUpdate) {
         studentList.set(studentList.indexOf(studentUpdate),s);
+    }
+    // ------------------------------------------------------------------
+    // CSV Functions session
+    public ArrayList<Student> readStudentFromCSV (String filename) throws IOException, ParseException {
+        ArrayList<Student> students =new ArrayList<>();
+        Path pathToFile = Paths.get(filename);
+        BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII);
+        String line = br.readLine();
+        while (line != null){
+            String[] attributes = line.split(",");
+            Student student = createStudent_ForCSV(attributes);
+            students.add(student);
+            line = br.readLine();
+        }
+        return students;
+    }
+    public ArrayList<Course> readCourseFromCSV (String filename) throws IOException, ParseException {
+        ArrayList<Course> courses =new ArrayList<>();
+        Path pathToFile = Paths.get(filename);
+        BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII);
+        String line = br.readLine();
+        while (line != null){
+            String[] attributes = line.split(",");
+            Course course = createCourse_ForCSV(attributes);
+            courses.add(course);
+            line = br.readLine();
+        }
+        return courses;
+    }
+    public Student createStudent_ForCSV(String[] metadata) throws ParseException {
+        String name = metadata[0];
+        String studentId = metadata[1];
+
+        String dateAdjust = metadata[2];
+        Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateAdjust);
+
+        // create and return book of this metadata
+        return new Student(name, studentId, birthDate);
+    }
+    public Course createCourse_ForCSV(String[] metadata) throws ParseException {
+        String courseName = metadata[0];
+        String courseID = metadata[1];
+        int credit = Integer.parseInt(metadata[2]);
+        // create and return book of this metadata
+        return new Course(courseName, courseID, credit);
+    }
+    private static final String CSV_SEPARATOR = ",";
+    static void writeToCSV_Student(ArrayList<Student> studentsList)
+    {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("students.csv", true));
+            for (Student student : studentsList)
+            {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(student.getStudentId());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(student.getStudentName().trim().length() == 0? "" : student.getStudentName());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(student.getBirthDate());
+                oneLine.append(CSV_SEPARATOR);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {e.printStackTrace();}
+    }
+    static void writeToCSV_Course(ArrayList<Course> coursesList)
+    {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("courses.csv", true));
+            for (Course course : coursesList)
+            {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(course.getCourseId());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(course.getCourseName().trim().length() == 0? "" : course.getCourseName());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(course.getCredits());
+                oneLine.append(CSV_SEPARATOR);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        } catch (IOException e){e.printStackTrace();}
+    }
+    static void writeToCSV_Semester(ArrayList<Semester> semesterEnrollmentsList)
+    {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("semesters.csv", true));
+            for (Semester semester : semesterEnrollmentsList)
+            {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(semester.getSemesterName());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(semester.getCourseArrayList());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(semester.getStudentArrayList());
+                oneLine.append(CSV_SEPARATOR);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {e.printStackTrace();}
     }
 
 }

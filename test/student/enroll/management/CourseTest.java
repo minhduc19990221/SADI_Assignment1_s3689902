@@ -2,12 +2,24 @@ package student.enroll.management;
 
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CourseTest {
 
+
     @Test
-    void addStudent() {
+    void addStudent() throws ParseException {
+        Course c = new Course("1", "SADI", 12);
+        String date = "21/02/1999";
+        Date dateTest = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+        Student s = new Student("1", "HUng", dateTest);
+        assertTrue(c.addStudent(s));
+
+
     }
 
     @Test

@@ -3,12 +3,12 @@ package student.enroll.management;
 import java.io.*;
 import java.util.ArrayList;
 
-public class SemesterEnrollment {
+public class Semester {
     private String semesterName;
     private ArrayList<Course> courseArrayList;
     private ArrayList<Student> studentArrayList;
 
-    public SemesterEnrollment(String semesterName) {
+    public Semester(String semesterName) {
         this.semesterName = semesterName;
         courseArrayList = new ArrayList<Course>();
         studentArrayList = new ArrayList<Student>();

@@ -14,8 +14,8 @@ public interface StudentEnrollmentManager {
     public void printCourse();
     public void getCourse(String id);
     public Course getCourseObject(String id);
-    public void modifySemester(SemesterEnrollment semester, SemesterEnrollment semesterToUpdate);
-    public SemesterEnrollment getSemesterObject(String name);
+    public void modifySemester(Semester semester, Semester semesterToUpdate);
+    public Semester getSemesterObject(String name);
 
 
 }
