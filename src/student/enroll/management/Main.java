@@ -333,6 +333,7 @@ public class Main {
                         System.out.println("Attempt to populate data...");
                         ses.setStudentList(ses.readStudentFromCSV("students.csv"));
                         ses.setCourseList(ses.readCourseFromCSV("courses.csv"));
+                        ses.setSemesterLists(ses.readSemesterFromCSV("semesters.csv"));
                         System.out.println("Success...!");
                     }
                     default -> {
